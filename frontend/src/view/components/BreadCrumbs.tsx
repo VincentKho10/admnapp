@@ -6,6 +6,7 @@ const BreadCrumbs = (props) => {
     if(i<=0){
       return;
     }
+    v=v[0].toUpperCase()+v.slice(1)
     if (i < a.length-1) {
       return(<li>
         <a className="btn btn-ghost text-xl">{v}</a>

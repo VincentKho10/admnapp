@@ -4,14 +4,13 @@ import Navbar from "../components/Navbar";
 import CollapseSubmenu from "../components/CollapseSubmenu";
 import navimportarr from "./navImportArr";
 import BreadCrumbs from "../components/BreadCrumbs";
-import { createBrowserRouter, useLocation } from "react-router-dom";
+// import { createBrowserRouter, useLocation } from "react-router-dom";
 
 //import pembelian
 import Pembelian from "./pembelian/Pembelian";
-import Pemesanan from "./pembelian/Pemesanan"
-import Penerimaan from "./pembelian/Penerimaan"
-import Pembayaran from "./pembelian/Pembayaran"
-
+import Pemesanan from "./pembelian/Pemesanan";
+import Penerimaan from "./pembelian/Penerimaan";
+import Pembayaran from "./pembelian/Pembayaran";
 
 import Penjualan from "./penjualan/Penjualan";
 import Stock from "./stock/Stock";
@@ -47,7 +46,12 @@ const Home = () => {
         </li>
       );
     } else {
-      return <li className="font-semibold text-xl">{v}</li>;
+      return (
+        <li className="font-semibold text-xl">
+          <span className="pl-4.25"> </span>
+          {v}
+        </li>
+      );
     }
   });
 
@@ -58,7 +62,7 @@ const Home = () => {
     const { icon, name, children } = v;
     if (children) {
       return (
-        <li>
+        <li className="">
           <details>
             <summary id={`/Home/${name}`} onClick={handleRouting}>
               {icon}
@@ -84,7 +88,7 @@ const Home = () => {
       );
     }
     return (
-      <li>
+      <li className="">
         <a href={`/${name}`}>
           {icon}
           {name}
@@ -104,30 +108,19 @@ const Home = () => {
       return <Penerimaan />;
     } else if (current == "Pembayaran") {
       return <Pembayaran />;
-    }
-
-    
-    else if (current == "Penjualan") {
+    } else if (current == "Penjualan") {
       return <Penjualan />;
-    } 
-    else if (current == "Penagihan") {
+    } else if (current == "Penagihan") {
       return <Penagihan />;
-    } 
-    else if (current == "Pengiriman") {
+    } else if (current == "Pengiriman") {
       return <Pengiriman />;
-    } 
-    else if (current == "Permintaan") {
+    } else if (current == "Permintaan") {
       return <Permintaan />;
-    } 
-
-
-    else if (current == "Stock") {
+    } else if (current == "Stock") {
       return <Stock />;
-    }
-    else if (current == "Barang Keluar") {
+    } else if (current == "Barang Keluar") {
       return <BarangKeluar />;
-    }
-    else if (current == "Barang Masuk") {
+    } else if (current == "Barang Masuk") {
       return <BarangMasuk />;
     }
   };
@@ -137,24 +130,28 @@ const Home = () => {
   // useLocation().pathname
   function showContent() {
     return (
-      <>
-        <Navbar
-          title={<BreadCrumbs pathlist={pathToCrumb} />}
-          drawerToggle={[drawerBtn, setDrawerBtn]}
-        />
-        <div className="shrink flex">
-        {routingPathHandle()}
+      <div className="flex flex-col h-screen">
+        <div className="h-1/12">
+          <Navbar
+            title={<BreadCrumbs pathlist={pathToCrumb} />}
+            drawerToggle={[drawerBtn, setDrawerBtn]}
+          />
         </div>
-      </>
+        <div className="flex flex-col h-11/12">
+          {routingPathHandle()}
+        </div>
+      </div>
     );
   }
 
   return (
-    <Drawer
-      content={showContent()}
-      sidebar={<CollapseSubmenu lsofitem={submenustruct} />}
-      drawerState={drawerBtn}
-    />
+    <div className="flex h-screen w-screen">
+      <Drawer
+        content={showContent()}
+        sidebar={<CollapseSubmenu lsofitem={submenustruct} />}
+        drawerState={drawerBtn}
+      />
+    </div>
   );
 };
 

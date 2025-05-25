@@ -7,7 +7,7 @@ const Navbar = (props) => {
     setDrawerBtn(!drawerBtn)
   }
   return (
-    <div className="navbar bg-base-100 shadow-sm srink">
+    <div className="flex flex-row bg-base-100 shadow-sm">
       <div className="flex-none">
         <button 
          className="btn btn-square btn-ghost" onClick={handleMenuToggle}>

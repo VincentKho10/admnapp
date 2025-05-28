@@ -1,0 +1,34 @@
+[
+  {
+    "Invoice_id": "INV-CMP/V/2023/001",
+    "PO_id": "232001223",
+    "SJ_id": "2023/V/001",
+    "Customer": "PT. TTPA",
+    "Total": "100000000",
+    "PPN": "10000000"
+  },
+  {
+    "Invoice_id": "INV-CMP/V/2023/002",
+    "PO_id": "232001223",
+    "SJ_id": "2023/V/001",
+    "Customer": "PT. TTPA",
+    "Total": "100000000",
+    "PPN": "10000000"
+  },
+  {
+    "Invoice_id": "INV-CMP/V/2023/003",
+    "PO_id": "232001223",
+    "SJ_id": "2023/V/001",
+    "Customer": "PT. TTPA",
+    "Total": "100000000",
+    "PPN": "10000000"
+  },
+  {
+    "Invoice_id": "INV-CMP/V/2023/004",
+    "PO_id": "232001223",
+    "SJ_id": "2023/V/001",
+    "Customer": "PT. TTPA",
+    "Total": "100000000",
+    "PPN": "10000000"
+  }
+]

@@ -4,9 +4,17 @@ const TableModifier = (props) => {
     const {handleClick, modifyState} = props;
   return (
     <div className="flex felx-row content-center justify-between">
-        <button className="btn m-2 bg-green-500" onClick={handleClick}>
+        <div id="submitter">
+        <button className="btn m-2 bg-green-600" onClick={handleClick}>
           Create
         </button>
+        <button
+            className={`btn m-2 bg-orange-500 ${modifyState == "View" ? "btn-disabled" : ""}`}
+            onClick={handleClick}
+          >
+            Change
+          </button>
+          </div>
         <div id="modifiers">
           <button
             className={`btn m-2 ${modifyState == "Delete" ? "bg-red-500" : ""}`}

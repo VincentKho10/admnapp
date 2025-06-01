@@ -6,9 +6,10 @@ import TableModifier from "../../components/TableModifier";
 const Pembayaran = () => {
   const [modifyState, setModifyState] = useState("View");
   const [arrCheckbox, setArrCheckbox] = useState(new Map());
+  const [isDetail, setIsDetail] = useState(true)
   const headArr = [
     "No",
-    <input
+    isDetail?"":<input
       className={`checkbox`}
       type="checkbox"
       onChange={(e) => handleCheckboxHeader(e)}
@@ -24,7 +25,7 @@ const Pembayaran = () => {
   useEffect(() => {
     let newEnt = new Map();
     bodyarrjson.forEach((v) => {
-      newEnt.set(v["Invoice_id"], true);
+      newEnt.set(v["Invoice_id"], false);
     });
     setArrCheckbox(newEnt);
   }, [bodyarrjson]);
@@ -35,8 +36,11 @@ const Pembayaran = () => {
       setModifyState(innerText);
       //what modifier
       if (innerText == "Delete") {
+        setIsDetail(false)
       } else if (innerText == "Update") {
+        setIsDetail(true)
       } else if (innerText == "View") {
+        setIsDetail(true)
       }
     } else {
       //adding table
@@ -63,6 +67,7 @@ const Pembayaran = () => {
   };
 
   const bodyOnChangeHandler = (e, v1) => {
+    console.log(e)
     let newEnt = new Map();
     arrCheckbox.forEach((v, k, m) =>
       newEnt.set(k, k == v1["Invoice_id"] ? e.target.checked : v)
@@ -77,16 +82,16 @@ const Pembayaran = () => {
         {bodyarrjson.map((v, i) => {
           const pk = v["Invoice_id"]
           return (
-            <tr>
+            <tr className="hover:bg-blue-500 hover:select-ghost"
+                      onClick={(e) => bodyOnChangeHandler(e, v)}>
               <th>{i + 1}</th>
               <td>
                 {
-                  <label key={pk}>
+                  isDetail?"":<label key={pk}>
                     <input
                       className="checkbox"
                       type="checkbox"
                       checked={arrCheckbox.get(pk)}
-                      onChange={(e) => bodyOnChangeHandler(e, v)}
                     />
                   </label>
                 }

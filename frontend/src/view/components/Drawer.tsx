@@ -5,8 +5,8 @@ const Drawer = (props) => {
   return (
     <div className="flex flex-row h-full w-full">
       {/* <input id="my-drawer-2" type="checkbox" className="drawer-toggle hidden" /> */}
-      <div className={`w-2/12 flex-row ${drawerState ? "" : "hidden"}`}>
-        <ul className="bg-base-200 h-screen">
+      <div className={`w-2/12 min-w-40 h-full flex-row ${drawerState ? "" : "hidden"}`}>
+        <ul className="bg-base-200 h-full">
           {/* Sidebar content here */}
           {sidebar}
         </ul>

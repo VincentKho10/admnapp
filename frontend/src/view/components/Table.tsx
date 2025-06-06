@@ -1,18 +1,5 @@
 import React from "react";
 
-const Pagination = () => {
-  return (
-    <div>
-      <select defaultValue="50" className="select">
-        <option>50</option>
-        <option>100</option>
-        <option>500</option>
-        <option>All</option>
-      </select>
-    </div>
-  );
-};
-
 const TableContent = (props) => {
   const { content } = props;
   return (
@@ -27,7 +14,6 @@ const Table = (props) => {
   return (
     <div className="overflow-x-auto w-full flex flex-col items-center">
       <TableContent content={content} />
-      <Pagination />
     </div>
   );
 };

@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import Table from "../../components/Table";
 import bodyarrjson from "../dummy_data/body_arr.json";
 import TableModifier from "../../components/TableModifier";
+import Modal from "../../components/Modal";
+import ModalDetail from "../../components/customized/ModalDetail";
 
 const Pembayaran = () => {
-  const [modifyState, setModifyState] = useState("View");
-  const [arrCheckbox, setArrCheckbox] = useState(new Map());
-  const [isDetail, setIsDetail] = useState(true)
+  const [arrCheckbox, setArrCheckbox] = useState<string[]>([]);
+  const [selectAllState, setSelectAllState] = useState(false)
+
   const headArr = [
     "No",
-    isDetail?"":<input
+    <input
       className={`checkbox`}
       type="checkbox"
-      onChange={(e) => handleCheckboxHeader(e)}
+      onClick={(e) => handleCheckboxHeader(e)}
     />,
     "No. Invoice",
     "No. PO",
@@ -22,25 +24,12 @@ const Pembayaran = () => {
     "PPN",
   ];
 
-  useEffect(() => {
-    let newEnt = new Map();
-    bodyarrjson.forEach((v) => {
-      newEnt.set(v["Invoice_id"], false);
-    });
-    setArrCheckbox(newEnt);
-  }, [bodyarrjson]);
-
-  const handleClick = (event) => {
+  const handleModifiersClick = (event) => {
     const { innerText, parentElement } = event.target;
     if (parentElement.id == "modifiers") {
-      setModifyState(innerText);
-      //what modifier
       if (innerText == "Delete") {
-        setIsDetail(false)
       } else if (innerText == "Update") {
-        setIsDetail(true)
       } else if (innerText == "View") {
-        setIsDetail(true)
       }
     } else {
       //adding table
@@ -48,10 +37,20 @@ const Pembayaran = () => {
   };
 
   const handleCheckboxHeader = (e) => {
-    let newEnt = new Map();
-    arrCheckbox.forEach((v, k, m) => newEnt.set(k, e.target.checked));
-    setArrCheckbox(newEnt);
-    console.log(arrCheckbox);
+    const cbtablerow = document.querySelectorAll(".cb-table-row")
+    let res = []
+    cbtablerow.forEach((v)=>{
+      if(e.target.checked)res.push(v.value)
+      v.checked = e.target.checked
+    })
+    if(e.target.checked) {
+      setArrCheckbox(res)
+    }
+    else {
+      console.log("removed")
+      setArrCheckbox([])
+    }
+    console.log(arrCheckbox)
   };
 
   const headerGenerate = () => {
@@ -66,15 +65,25 @@ const Pembayaran = () => {
     );
   };
 
-  const bodyOnChangeHandler = (e, v1) => {
+  const tableRowHandler = (e, v1) => {
     console.log(e)
-    let newEnt = new Map();
-    arrCheckbox.forEach((v, k, m) =>
-      newEnt.set(k, k == v1["Invoice_id"] ? e.target.checked : v)
-    );
-    setArrCheckbox(newEnt);
     console.log(arrCheckbox);
   };
+
+  const detailHandler = (e)=>{
+    const model_data = document.querySelector("#data-detail")
+    model_data?model_data.showModal():""
+  }
+
+  const handleRowCheckbox = (e)=>{
+    const {value, checked} = e.target
+    if(checked){
+      setArrCheckbox([...arrCheckbox, value])
+    }else{
+      const removeditem = arrCheckbox.filter((v)=>v!=value)
+      setArrCheckbox(removeditem)
+    }
+  }
 
   const bodyGenerate = () => {
     return (
@@ -82,26 +91,23 @@ const Pembayaran = () => {
         {bodyarrjson.map((v, i) => {
           const pk = v["Invoice_id"]
           return (
-            <tr className="hover:bg-blue-500 hover:select-ghost"
-                      onClick={(e) => bodyOnChangeHandler(e, v)}>
+            <tr className="h-10 hover:bg-blue-600"
+                      onClick={(e) => tableRowHandler(e, v)}>
               <th>{i + 1}</th>
-              <td>
-                {
-                  isDetail?"":<label key={pk}>
+              <th>
                     <input
-                      className="checkbox"
+                     value={pk}
+                      className="checkbox cb-table-row"
                       type="checkbox"
-                      checked={arrCheckbox.get(pk)}
+                      onClick={handleRowCheckbox}
                     />
-                  </label>
-                }
-              </td>
-              <td>{pk}</td>
-              <td>{v["PO_id"]}</td>
-              <td>{v["SJ_id"]}</td>
-              <td>{v["Customer"]}</td>
-              <td>{v["Total"]}</td>
-              <td>{v["PPN"]}</td>
+              </th>
+              <td onClick={(e)=>detailHandler(e)}>{pk}</td>
+              <td onClick={(e)=>detailHandler(e)}>{v["PO_id"]}</td>
+              <td onClick={(e)=>detailHandler(e)}>{v["SJ_id"]}</td>
+              <td onClick={(e)=>detailHandler(e)}>{v["Customer"]}</td>
+              <td onClick={(e)=>detailHandler(e)}>{v["Total"]}</td>
+              <td onClick={(e)=>detailHandler(e)}>{v["PPN"]}</td>
             </tr>
           );
         })}
@@ -109,14 +115,28 @@ const Pembayaran = () => {
     );
   };
 
+const Pagination = () => {
+  return (
+    <div>
+      <select defaultValue="50" className="select">
+        <option>50</option>
+        <option>100</option>
+        <option>500</option>
+        <option>All</option>
+      </select>
+    </div>
+  );
+};
   // const footerGenerate =()=>{
   //   return
   // }
 
   return (
-    <div className="flex flex-col h-full w-full p-4">
-      <TableModifier handleClick={handleClick} modifyState={modifyState} />
-      <div className="flex h-11/12 w-full justify-center">
+    <div className="flex flex-col h-full w-full p-4 items-center">
+      <div className="w-full">
+        <TableModifier handleClick={handleModifiersClick} />
+      </div>
+      <div className="flex h-10/12 w-full justify-center p-5">
         <Table
           content={
             <>
@@ -126,7 +146,10 @@ const Pembayaran = () => {
             </>
           }
         />
+        <ModalDetail id="data-detail" title="Test"/>
       </div>
+      
+      <Pagination />
     </div>
   );
 };
